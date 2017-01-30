@@ -8,6 +8,8 @@ export class RenderService {
   private _camera: THREE.Camera;
   private _controls: THREE.TrackballControls;
 
+  private _planet: Planet;
+
   constructor() {}
 
   public init(renderElement: ElementRef) {
@@ -21,14 +23,14 @@ export class RenderService {
 
     this._controls = new THREE.TrackballControls(this._camera, this._renderer.domElement);
 
-    let planet = new Planet();
-    this._scene.add(planet.mesh);
+    this._planet = new Planet(this._scene, this._camera);
+    //this._scene.add(this._planet.mesh);
 
-    let light = new THREE.AmbientLight(0x0c0c0c);
+    let light = new THREE.AmbientLight(0xcccccc);
     this._scene.add(light);
 
     let spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-30, 60, 60);
+    spotLight.position.set(30, 60, 60);
     spotLight.castShadow = true;
     this._scene.add(spotLight);
 
@@ -39,6 +41,9 @@ export class RenderService {
   private render = () => {
     requestAnimationFrame( this.render );
 
+    //console.log(this._camera.position.distanceTo(this._planet.position) - 1.0);
+
+    this._planet.update();
     this._controls.update();
     this._renderer.render(this._scene, this._camera);
   }
