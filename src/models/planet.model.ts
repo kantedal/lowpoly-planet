@@ -87,7 +87,8 @@ export class Planet {
     for (let i = 0; i < recursionLevel; i++) {
       let currentFaces = [];
       for (let face of this._geometry.faces) {
-        // if (face.normal.clone().dot(this._camera.position.clone().sub(this._mesh.position)) > 0 || i == 0) {
+        console.log(face.normal.x, face.normal.y, face.normal.z);
+        if (face.normal.clone().dot(this._camera.position.clone().normalize()) > 0.3 || i == 0) {
           let v0 = this._geometry.vertices[face.a];
           let v1 = this._geometry.vertices[face.b];
           let v2 = this._geometry.vertices[face.c];
@@ -113,10 +114,11 @@ export class Planet {
           currentFaces.push(faces[1]);
           currentFaces.push(faces[2]);
           currentFaces.push(faces[3]);
-        // }
+        }
       }
 
       this._geometry.faces = currentFaces;
+      this._geometry.computeFaceNormals();
     }
   }
 
