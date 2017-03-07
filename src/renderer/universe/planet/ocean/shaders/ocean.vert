@@ -7,7 +7,7 @@ varying vec3 vNormal;
 uniform float time;
 
 void main() {
-    vec3 newPosition =  position + snoise3(1.5 * vec3(time) + position * 0.7) * 0.12;
+    vec3 newPosition =  position + snoise3(1.5 * vec3(time) + position * 0.7) * 0.08;
 
     vUv = uv;
     vPosition = vec3(modelMatrix * vec4(newPosition, 1.0));

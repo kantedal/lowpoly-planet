@@ -1,4 +1,4 @@
-import {IcoSphereGeometry} from "../../utils/icosphere-geometry";
+import {IcoSphereGeometry} from "../../../utils/icosphere-geometry";
 
 /*
  Shader imports

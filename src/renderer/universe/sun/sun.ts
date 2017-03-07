@@ -11,9 +11,10 @@ export default class Sun {
   private _mesh: THREE.Mesh;
   private _uniforms: any;
   private _shader: THREE.ShaderMaterial;
+  private _renderTarget: THREE.WebGLRenderTarget;
 
-  constructor() {
-    this._sunGeometry = new IcoSphereGeometry(4.0, 2);
+  constructor(private _renderer: THREE.WebGLRenderer, private _camera: THREE.Camera, private _scene: THREE.Scene) {
+    this._sunGeometry = new IcoSphereGeometry(6.0, 2);
 
     this._uniforms = { time: { type: 'f', value: 0.0 } };
     this._shader = new THREE.ShaderMaterial({
@@ -25,12 +26,14 @@ export default class Sun {
     this._shader.needsUpdate = true;
 
     this._mesh = new THREE.Mesh(this._sunGeometry.geometry, this._shader);
-    this._mesh.position.set(15,15,15);
+    this._mesh.position.set(20, 20, 20);
+    this._scene.add(this._mesh);
   }
 
   public update(time: number) {
     this._uniforms.time.value = time;
   }
 
-  get mesh(): THREE.Mesh { return this._mesh; }
+  get texture(): THREE.Texture { return this._renderTarget.texture; }
+
 }

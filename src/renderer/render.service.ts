@@ -1,5 +1,5 @@
 import {Injectable, ElementRef} from "@angular/core";
-import Planet from "./planet/planet";
+import Universe from "./universe/universe";
 
 @Injectable()
 export class RenderService {
@@ -8,7 +8,7 @@ export class RenderService {
   private _camera: THREE.Camera;
   private _controls: THREE.TrackballControls;
 
-  private _planet: Planet;
+  private _universe: Universe;
 
   constructor() {}
 
@@ -20,14 +20,12 @@ export class RenderService {
 
     this._scene = new THREE.Scene();
     this._camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    this._camera.position.z = 35;
+    this._camera.position.z = 55;
 
     this._controls = new THREE.TrackballControls(this._camera, this._renderer.domElement);
 
-    this._planet = new Planet(this._scene);
+    this._universe = new Universe(this._renderer, this._camera);
 
-    let light = new THREE.AmbientLight(0xcccccc);
-    this._scene.add(light);
     this.render();
   }
 
@@ -37,8 +35,8 @@ export class RenderService {
 
     //console.log(this._camera.position.distanceTo(this._planet.position) - 1.0);
     this._time += 0.002;
-    this._planet.update(this._time);
     this._controls.update();
-    this._renderer.render(this._scene, this._camera);
+    this._universe.render(this._time);
+    //this._renderer.render(this._scene, this._camera);
   }
 }

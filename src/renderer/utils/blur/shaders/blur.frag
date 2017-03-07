@@ -1,4 +1,4 @@
-#pragma glslify: blur = require("glsl-fast-gaussian-blur")
+#pragma glslify: blur3 = require("glsl-fast-gaussian-blur/13")
 
 uniform vec2 resolution;
 uniform sampler2D inputTexture;
@@ -15,15 +15,12 @@ varying vec2 vUv;
 
 void main() {
     float blurFactor = blurSize;
-    vec3 clr = (
-        texture2D( inputTexture, vUv + blurFactor * 2.0 * direction / resolution ).xyz +
-        texture2D( inputTexture, vUv + blurFactor * 1.0 * direction / resolution ).xyz +
-        texture2D( inputTexture, vUv + blurFactor * 0.0 * direction / resolution ).xyz +
-        texture2D( inputTexture, vUv - blurFactor * 1.0 * direction / resolution ).xyz +
-        texture2D( inputTexture, vUv - blurFactor * 2.0 * direction / resolution ).xyz
-    );
+
+    vec2 res = vec2(1073.0, 900.0);
+    vec2 uv = vec2(gl_FragCoord.xy / resolution.xy);
+    vec3 clr = blur3(inputTexture, uv, resolution.xy, direction).xyz;
 
     vec3 minVal = vec3(0.0);
-    vec3 maxVal = vec3(5.0);
-    gl_FragColor = vec4(clamp(clr / 5.0, minVal, maxVal), 1.0);
+    vec3 maxVal = vec3(1.0);
+    gl_FragColor = vec4(clamp(clr, minVal, maxVal), 1.0);
 }

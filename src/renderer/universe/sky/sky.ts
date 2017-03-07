@@ -6,13 +6,14 @@ const skyVert = require('raw-loader!glslify-loader!./shaders/sky.vert');
 
 export default class Sky {
   private _fboScene: THREE.Scene;
-  private _orthographicCamera: THREE.OrthographicCamera;
+  private _camera: THREE.PerspectiveCamera;
   private _renderTarget: THREE.WebGLRenderTarget;
   private _shader: THREE.ShaderMaterial;
   private _uniforms: any;
 
   constructor(private _renderer: THREE.WebGLRenderer) {
-    this._orthographicCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1 / Math.pow( 2, 53 ), 1);
+    this._camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    this._camera.position.z = 1;
 
     this._renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
       minFilter: THREE.NearestFilter,
@@ -31,13 +32,15 @@ export default class Sky {
     this._shader.needsUpdate = true;
 
     this._fboScene = new THREE.Scene();
-    let geometry = new THREE.PlaneGeometry(2, 2, 50, 50);
+    let geometry = new THREE.PlaneGeometry(2, 2, 20, 20);
     let plane = new THREE.Mesh( geometry, this._shader );
     this._fboScene.add( plane );
   }
 
   public render(time: number) {
     this._uniforms.time.value = time;
-    this._renderer.render(this._fboScene, this._orthographicCamera);
+    this._renderer.render(this._fboScene, this._camera, this._renderTarget);
   }
+
+  get texture(): THREE.Texture { return this._renderTarget.texture; }
 }
