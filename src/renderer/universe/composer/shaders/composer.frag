@@ -17,5 +17,5 @@ void main(void) {
         color = universeColor;
     }
 
-    gl_FragColor = color + 0.7 * glowColor;
+    gl_FragColor = color + 0.5 * glowColor;
 }

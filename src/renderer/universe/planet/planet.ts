@@ -1,26 +1,28 @@
 import Land from "./land/land";
 import Ocean from "./ocean/ocean";
 import Cloud from "./cloud/cloud";
+import {PlanetSettings} from "../../settings.service";
 
 export default class Planet {
+  private _planetGroup: THREE.Group;
   private _land: Land;
   private _ocean: Ocean;
   private _clouds: Cloud[];
-  private _renderTarget: THREE.WebGLRenderTarget;
 
-  constructor(private _renderer: THREE.WebGLRenderer, private _camera: THREE.Camera, private _scene: THREE.Scene) {
-    this._land = new Land();
-    this._scene.add(this._land.mesh);
+  constructor(planetSettings: PlanetSettings) {
+    this._planetGroup = new THREE.Group();
+    this._land = new Land(planetSettings);
+    this._planetGroup.add(this._land.mesh);
 
-    this._ocean = new Ocean();
-    this._scene.add(this._ocean.mesh);
+    this._ocean = new Ocean(planetSettings);
+    this._planetGroup.add(this._ocean.mesh);
 
     this._clouds = [];
     for (let i = 0; i < 10; i++) {
       let cloud = new Cloud();
 
       this._clouds.push(cloud);
-      this._scene.add(cloud.cloudGroup);
+      this._planetGroup.add(cloud.cloudGroup);
     }
   }
 
@@ -28,11 +30,12 @@ export default class Planet {
     let delta = 0.01;
 
     this._ocean.update(time);
+    this._land.update(time);
 
     for (let cloud of this._clouds) {
       cloud.update(time, delta);
     }
   }
 
-  get texture(): THREE.Texture { return this._renderTarget.texture; }
+  get planetGroup(): THREE.Group { return this._planetGroup; }
 }

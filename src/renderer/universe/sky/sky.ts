@@ -32,7 +32,7 @@ export default class Sky {
     this._shader.needsUpdate = true;
 
     this._fboScene = new THREE.Scene();
-    let geometry = new THREE.PlaneGeometry(2, 2, 20, 20);
+    let geometry = new THREE.PlaneGeometry(4, 4, 40, 40);
     let plane = new THREE.Mesh( geometry, this._shader );
     this._fboScene.add( plane );
   }

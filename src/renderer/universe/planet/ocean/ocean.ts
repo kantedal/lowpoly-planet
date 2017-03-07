@@ -1,4 +1,5 @@
 import {IcoSphereGeometry} from "../../../utils/icosphere-geometry";
+import {PlanetSettings} from "../../../settings.service";
 
 /*
  Shader imports
@@ -12,10 +13,11 @@ export default class Ocean {
   private _shader: THREE.ShaderMaterial;
   private _mesh: THREE.Mesh;
 
-  constructor() {
-    this._oceanGeometry = new IcoSphereGeometry(9.2, 4);
+  constructor(private _planetSettings: PlanetSettings) {
+    this._oceanGeometry = new IcoSphereGeometry(1, 4);
     this._uniforms = {
       sunPosition: { type: 'v3', value: new THREE.Vector3(10,10,10)},
+      oceanLevel: { type: 'f', value: 8.0 },
       time: { type: 'f', value: 0.0 }
     };
     this._shader = new THREE.ShaderMaterial({
@@ -26,11 +28,11 @@ export default class Ocean {
     });
     this._shader.needsUpdate = true;
     this._mesh = new THREE.Mesh(this._oceanGeometry.geometry, this._shader);
-
   }
 
   public update(time: number) {
     this._uniforms.time.value = time;
+    this._uniforms.oceanLevel.value = this._planetSettings.oceanLevel;
   }
 
   get mesh(): THREE.Mesh { return this._mesh; }

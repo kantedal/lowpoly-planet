@@ -14,7 +14,7 @@ export default class Sun {
   private _renderTarget: THREE.WebGLRenderTarget;
 
   constructor(private _renderer: THREE.WebGLRenderer, private _camera: THREE.Camera, private _scene: THREE.Scene) {
-    this._sunGeometry = new IcoSphereGeometry(6.0, 2);
+    this._sunGeometry = new IcoSphereGeometry(6.0, 1);
 
     this._uniforms = { time: { type: 'f', value: 0.0 } };
     this._shader = new THREE.ShaderMaterial({

@@ -5,6 +5,7 @@ varying vec3 vPosition;
 varying vec3 vNormal;
 
 uniform vec3 sunPosition;
+uniform float oceanLevel;
 uniform float time;
 
 vec3 phong(vec3 ka, vec3 kd, vec3 ks, float alpha, vec3 normal) {
@@ -25,7 +26,24 @@ void main() {
     vec3 dY = dFdy(vPosition);
     vec3 normal = normalize(cross(dX, dY));
 
-    vec3 phongColor = phong(vec3(0.03, 0.1, 0.05), vec3(0.1, 0.2, 0.1), vec3(0.1), 10.0, normal);
+
+    float height = length(vPosition);
+    vec3 ambientColor = vec3(0.03, 0.1, 0.05);
+    vec3 diffuseColor = vec3(0.1, 0.2, 0.1);
+    vec3 specularColor = vec3(0.1);
+
+    if (height < oceanLevel + 1.2) {
+        ambientColor = vec3(0.2, 0.2, 0.1);
+        diffuseColor = vec3(0.2, 0.2, 0.1);
+    }
+
+//    if (abs(dot(normalize(vPosition), normal)) < 0.9) {
+//        ambientColor = vec3(0.1, 0.1, 0.1);
+//        diffuseColor = vec3(0.1, 0.1, 0.1);
+//    }
+
+
+    vec3 phongColor = phong(ambientColor, diffuseColor, specularColor, 10.0, normal);
     vec3 flatAmbient = vec3(0.0, 0.0, 0.0);
     gl_FragColor = vec4(phongColor + flatAmbient, 1.0);
 }

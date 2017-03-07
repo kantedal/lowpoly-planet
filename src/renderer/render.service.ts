@@ -1,5 +1,6 @@
 import {Injectable, ElementRef} from "@angular/core";
 import Universe from "./universe/universe";
+import {SettingsService} from "./settings.service";
 
 @Injectable()
 export class RenderService {
@@ -10,7 +11,7 @@ export class RenderService {
 
   private _universe: Universe;
 
-  constructor() {}
+  constructor(public settingsService: SettingsService) {}
 
   public init(renderElement: ElementRef) {
     this._renderer = new THREE.WebGLRenderer({alpha: true});
@@ -25,6 +26,8 @@ export class RenderService {
     this._controls = new THREE.TrackballControls(this._camera, this._renderer.domElement);
 
     this._universe = new Universe(this._renderer, this._camera);
+
+    this._universe.addPlanet(this.settingsService.addPlanet());
 
     this.render();
   }

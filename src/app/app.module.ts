@@ -4,6 +4,9 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {RenderService} from "../renderer/render.service";
+import {MaterialModule} from "@angular/material";
+import 'hammerjs';
+import {SettingsService} from "../renderer/settings.service";
 
 @NgModule({
   declarations: [
@@ -12,10 +15,12 @@ import {RenderService} from "../renderer/render.service";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    MaterialModule
   ],
   providers: [
-    RenderService
+    RenderService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

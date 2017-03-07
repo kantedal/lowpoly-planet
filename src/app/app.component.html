@@ -1,3 +1,28 @@
-<div #renderArea class="render-area">
+<div class="app">
+  <div class="options-pane">
+    <table>
+      <td class="property-container">
+        <div class="property-header">
+          Planet seed
+        </div>
+        <md-slider (input)="planetSeedChanged($event)" min="0.0" max="5.0" step="0.1" value="1.0" #planetRadiusSlider></md-slider>
+      </td>
 
+      <td class="property-container">
+        <div class="property-header">
+          Planet radius
+        </div>
+        <md-slider (input)="planetRadiusChanged($event)" min="0.0" max="20.0" step="0.1" value="10.0" #planetRadiusSlider></md-slider>
+      </td>
+
+      <td class="property-container">
+        <div class="property-header">
+          Ocean level
+        </div>
+        <md-slider (input)="oceanLevelChanged($event)"  min="0.0" max="20.0" step="0.1" value="8.0" #oceanLevelSlider></md-slider>
+      </td>
+    </table>
+
+  </div>
 </div>
+<div #renderArea class="render-area"></div>

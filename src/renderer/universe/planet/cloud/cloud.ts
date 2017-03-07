@@ -23,7 +23,7 @@ export default class Cloud {
     this._cloudSpeed = Math.random() - 0.5;
     this._cloudScale = Math.random() * 0.4 + 0.6;
     this._cloudHeight = (Math.random() * 2.0) + 11.0;
-    this._cloudRotation = Math.random() * 2.0 * Math.PI;
+    this._cloudRotation = (Math.random() - 0.5) * 2.0 * Math.PI;
 
     this._cloudGeometry = new IcoSphereGeometry(1.0, 0);
     this._uniforms = {
@@ -48,20 +48,19 @@ export default class Cloud {
       cloudMesh.scale.set(scale, scale, scale);
 
       cloudMesh.position.set((2 - i) * 1.3, -Math.min(0.5 - scale, 0.0), 0);
-      cloudMesh.rotation.set(2 * Math.PI * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random());
+      cloudMesh.rotation.set(2 * Math.PI * (Math.random() - 0.5), 2 * Math.PI * (Math.random() - 0.5), 2 * Math.PI * (Math.random() - 0.5));
 
       this._cloudGroup.add(cloudMesh);
       this._cloudGroup.position.set(0, this._cloudHeight, 0);
       this._cloudGroup.scale.set(this._cloudScale, this._cloudScale, this._cloudScale);
-
-      this._cloudWorldGroup.add(this._cloudGroup);
-      this._cloudWorldGroup.rotation.set(this._cloudRotation, this._cloudRotation, this._cloudRotation);
     }
+
+    this._cloudWorldGroup.add(this._cloudGroup);
+    this._cloudWorldGroup.rotation.set((Math.random() - 0.5) * 2.0 * Math.PI, (Math.random() - 0.5) * 2.0 * Math.PI, (Math.random() - 0.5) * 2.0 * Math.PI);
   }
 
   public update(time: number, delta: number) {
     this._uniforms.time.value = time;
-
     this._cloudWorldGroup.rotateZ(delta * 0.5 * this._cloudSpeed)
   }
 

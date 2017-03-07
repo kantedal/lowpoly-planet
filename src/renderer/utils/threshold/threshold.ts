@@ -20,7 +20,7 @@ export default class Threshold {
   constructor(private _renderer: THREE.WebGLRenderer) {
     this._uniforms = {
       universeTexture: { type: 't', value: null },
-      threshold: { type: 'f', value: 0.8 }
+      threshold: { type: 'f', value: 0.5 }
     };
 
     this._thresholdShader = new THREE.ShaderMaterial({

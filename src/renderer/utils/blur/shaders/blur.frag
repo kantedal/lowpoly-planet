@@ -15,10 +15,7 @@ varying vec2 vUv;
 
 void main() {
     float blurFactor = blurSize;
-
-    vec2 res = vec2(1073.0, 900.0);
-    vec2 uv = vec2(gl_FragCoord.xy / resolution.xy);
-    vec3 clr = blur3(inputTexture, uv, resolution.xy, direction).xyz;
+    vec3 clr = blur3(inputTexture, vUv, resolution.xy, direction).xyz;
 
     vec3 minVal = vec3(0.0);
     vec3 maxVal = vec3(1.0);
