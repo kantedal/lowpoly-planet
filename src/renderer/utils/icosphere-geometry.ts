@@ -1,22 +1,12 @@
 
-export class Planet {
-  private _scene: THREE.Scene;
-  private _camera: THREE.Camera;
+export class IcoSphereGeometry {
   private _baseFaces: Array<THREE.Face3>;
   private _geometry: THREE.Geometry;
-  private _mesh: THREE.Mesh;
 
-  constructor(scene: THREE.Scene, camera: THREE.Camera) {
-    this._scene = scene;
-    this._camera = camera;
+  constructor(private _radius: number, private _detailLevel: number) {
     this._geometry = new THREE.Geometry();
     this.generateBaseGeometry();
-
-    this._geometry.computeFaceNormals();
-    this._mesh = new THREE.Mesh(this._geometry, new THREE.MeshLambertMaterial({color: 0xff0000, wireframe: true, shading: THREE.SmoothShading}));
-
     this.generateGeometry();
-    this._scene.add(this._mesh);
   }
 
   private generateBaseGeometry() {
@@ -63,15 +53,12 @@ export class Planet {
     this._baseFaces.push(new THREE.Face3(6, 2, 10));
     this._baseFaces.push(new THREE.Face3(8, 6, 7));
     this._baseFaces.push(new THREE.Face3(9, 8, 1));
-
   }
 
   private generateGeometry() {
-    //this._geometry.vertices = this._baseVertices;
     this._geometry.faces = this._baseFaces;
 
-    let recursionLevel = 3;
-    for (let i = 0; i < recursionLevel; i++) {
+    for (let i = 0; i < this._detailLevel; i++) {
       let currentFaces = [];
       for (let face of this._geometry.faces) {
         let v0 = this._geometry.vertices[face.a];
@@ -102,7 +89,13 @@ export class Planet {
       }
 
       this._geometry.faces = currentFaces;
+      this._geometry.uvsNeedUpdate = true;
+      this.calculateUVs();
       this._geometry.computeFaceNormals();
+    }
+
+    for (let vertex of this._geometry.vertices) {
+      vertex.multiplyScalar(this._radius);
     }
   }
 
@@ -111,11 +104,37 @@ export class Planet {
     this._geometry.vertices.push(new THREE.Vector3(point.x / length, point.y / length, point.z / length));
   }
 
+  private getUVfromPosition(v: THREE.Vector3): THREE.Vector2 {
+    let v1 = v.clone().normalize();
+    return new THREE.Vector2(
+      (Math.atan2(v1.y, v1.x) + Math.PI) / (2.0 * Math.PI),
+      Math.atan2(Math.sqrt(v1.x * v1.x + v1.y * v1.y), v1.z) / Math.PI
+    )
+  }
+
+  private calculateUVs(): void {
+    this._geometry.faceVertexUvs[0] = [];
+
+    for (let face of this._geometry.faces) {
+      let v0 = this._geometry.vertices[face.a];
+      let v1 = this._geometry.vertices[face.b];
+      let v2 = this._geometry.vertices[face.c];
+
+      this._geometry.faceVertexUvs[0].push([
+        this.getUVfromPosition(v0),
+        this.getUVfromPosition(v1),
+        this.getUVfromPosition(v2)
+      ])
+    }
+  }
+
   private getMiddlePoint(v1: THREE.Vector3, v2: THREE.Vector3): number {
     let direction = v2.clone().sub(v1);
     let length = direction.length();
     direction = direction.normalize();
-    let midPoint = v1.clone().add(direction.multiplyScalar(length*0.5));
+
+    let mid = 0.5;
+    let midPoint = v1.clone().add(direction.multiplyScalar(length * mid));
 
     let l = Math.sqrt(midPoint.x * midPoint.x + midPoint.y * midPoint.y + midPoint.z * midPoint.z);
     let testPoint = new THREE.Vector3(midPoint.x / l, midPoint.y / l, midPoint.z / l);
@@ -132,8 +151,5 @@ export class Planet {
     return this._geometry.vertices.length - 1;
   }
 
-  public update() {}
-
   get geometry(): THREE.Geometry { return this._geometry; }
-  get position(): THREE.Vector3 { return this._mesh.position; }
 }
