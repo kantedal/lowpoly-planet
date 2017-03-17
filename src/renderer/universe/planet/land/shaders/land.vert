@@ -14,7 +14,7 @@ void main() {
     // Sink ground for ocean
     float lowFreqLandNoise = max(pow(cnoise3(seed + vec3(24.0, 13.0, 1.0) + position * 1.0), 1.0) * 4.0, 0.0);
     float medFreqLandNoise = 0.6 * max(pow(cnoise3(seed + vec3(6.0, 1.0, 15.0) + position * 2.6), 1.0) * 4.0, 0.0);
-    float highFreqLandNoise = 0.4 * snoise3(position * 10.0);
+    float highFreqLandNoise = 0.1 * snoise3(position * 10.0);
 
     // Add some noise to ground
    // vec3 groundNoise = snoise3(position * 0.2) * 0.5;
