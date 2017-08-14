@@ -6,10 +6,15 @@ varying vec3 vNormal;
 
 uniform float oceanLevel;
 uniform float time;
+uniform float planetTemperature;
 
 void main() {
     vec3 newPosition = position - normal * oceanLevel;
-    newPosition = newPosition + snoise3(1.5 * vec3(time) + position * 3.0) * 0.2;
+
+    if (planetTemperature > 0.0) {
+      newPosition = newPosition + snoise3(1.5 * vec3(time) + position * 3.0) * 0.2;
+    }
+
 
     vUv = uv;
     vPosition = vec3(modelMatrix * vec4(newPosition, 1.0));

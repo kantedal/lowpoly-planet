@@ -3,17 +3,16 @@ import {BehaviorSubject, Observable} from "rxjs";
 
 export class PlanetSettings {
   id: number;
-  planetRadius: number;
-  planetSeed: number;
-  planetAmplitude: number;
-  oceanLevel: number;
+  planetRadius: number = 10.0;
+  planetSeed: number = 1.0;
+  planetAmplitude: number = 1.0;
+  planetFrequency: number = 1.0;
+  oceanLevel: number = 9.0;
+  planetTemperature: number = 10.0;
+  cloudCount: BehaviorSubject<number> = new BehaviorSubject(10);
 
   constructor(id: number) {
     this.id = id;
-    this.planetRadius = 10.0;
-    this.planetSeed = 0.0;
-    this.planetAmplitude = 3.0;
-    this.oceanLevel = 9.0;
   }
 }
 

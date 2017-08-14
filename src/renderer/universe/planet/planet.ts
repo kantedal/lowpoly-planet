@@ -17,10 +17,18 @@ export default class Planet {
     this._ocean = new Ocean(planetSettings);
     this._planetGroup.add(this._ocean.mesh);
 
-    this._clouds = [];
-    for (let i = 0; i < 10; i++) {
-      let cloud = new Cloud();
+    planetSettings.cloudCount.asObservable().subscribe(count => this.updateClouds(count))
+  }
 
+  public updateClouds(count: number) {
+    if (this._clouds) {
+      for (let cloud of this._clouds) {
+        this._planetGroup.remove(cloud.cloudGroup);
+      }
+    }
+    this._clouds = [];
+    for (let i = 0; i < count; i++) {
+      let cloud = new Cloud();
       this._clouds.push(cloud);
       this._planetGroup.add(cloud.cloudGroup);
     }

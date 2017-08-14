@@ -19,7 +19,10 @@ export default class Land {
       sunPosition: { type: 'v3', value: new THREE.Vector3(10,10,10)},
       planetRadius: { type: 'f', value: 10.0 },
       planetSeed: { type: 'f', value: 0.0 },
-      oceanLevel: { type: 'f', value: 0.0 }
+      oceanLevel: { type: 'f', value: 0.0 },
+      planetTemperature: { type: 'f', value: _planetSettings.planetTemperature },
+      planetFrequency: { type: 'f', value: _planetSettings.planetFrequency },
+      planetAmplitude: { type: 'f', value: _planetSettings.planetAmplitude }
     };
     this._shader = new THREE.ShaderMaterial({
       uniforms: this._uniforms,
@@ -35,6 +38,9 @@ export default class Land {
     this._uniforms.planetRadius.value = this._planetSettings.planetRadius;
     this._uniforms.planetSeed.value = this._planetSettings.planetSeed;
     this._uniforms.oceanLevel.value = this._planetSettings.oceanLevel;
+    this._uniforms.planetTemperature.value = this._planetSettings.planetTemperature;
+    this._uniforms.planetFrequency.value = this._planetSettings.planetFrequency;
+    this._uniforms.planetAmplitude.value = this._planetSettings.planetAmplitude;
   }
 
   get mesh(): THREE.Mesh { return this._mesh; }

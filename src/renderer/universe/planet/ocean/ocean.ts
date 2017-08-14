@@ -18,14 +18,17 @@ export default class Ocean {
     this._uniforms = {
       sunPosition: { type: 'v3', value: new THREE.Vector3(10,10,10)},
       oceanLevel: { type: 'f', value: 8.0 },
-      time: { type: 'f', value: 0.0 }
+      time: { type: 'f', value: 0.0 },
+      planetTemperature: { type: 'f', value: _planetSettings.planetTemperature }
     };
+
     this._shader = new THREE.ShaderMaterial({
       uniforms: this._uniforms,
       vertexShader: oceanVert,
       fragmentShader: oceanFrag,
       blending: THREE.AdditiveBlending
     });
+
     this._shader.needsUpdate = true;
     this._mesh = new THREE.Mesh(this._oceanGeometry.geometry, this._shader);
   }
@@ -33,6 +36,7 @@ export default class Ocean {
   public update(time: number) {
     this._uniforms.time.value = time;
     this._uniforms.oceanLevel.value = this._planetSettings.oceanLevel;
+    this._uniforms.planetTemperature.value = this._planetSettings.planetTemperature;
   }
 
   get mesh(): THREE.Mesh { return this._mesh; }
