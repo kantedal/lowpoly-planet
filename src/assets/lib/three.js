@@ -13281,7 +13281,7 @@
 
       if ( (mesh && mesh.isMesh) === false ) {
 
-        console.error( 'THREE.Geometry.mergeMesh(): mesh not an instance of THREE.Mesh.', mesh );
+        console.error( 'THREE.Geometry.mergeMesh(): planetMesh not an instance of THREE.Mesh.', mesh );
         return;
 
       }
